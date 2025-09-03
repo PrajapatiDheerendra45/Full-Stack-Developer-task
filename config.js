@@ -4,7 +4,7 @@ module.exports = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   
   // MongoDB Configuration
-  MONGODB_URI: process.env.MONGODB_URI || 'mongodb+srv://vrshrms:Praja%40123@vrshrms.se1r9ns.mongodb.net/vrs',
+  MONGODB_URI: process.env.MONGODB_URI || 'mongodb+srv://dheeru:Praja%40123@libraraymanagement.8sm6a.mongodb.net/Task-full-stack',
   
   // Security Configuration
   RATE_LIMIT_WINDOW_MS: process.env.RATE_LIMIT_WINDOW_MS || 900000, // 15 minutes
