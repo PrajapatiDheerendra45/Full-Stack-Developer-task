@@ -1,20 +1,33 @@
 {
-  "name": "task-full-stack-developer",
+  "name": "async-submission-autograder",
   "version": "1.0.0",
+  "description": "Async Submission & AutoGrader System",
   "main": "server.js",
-  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
   },
+  "keywords": [
+    "autograder",
+    "submission",
+    "async",
+    "grading"
+  ],
   "author": "",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "helmet": "^8.1.0",
     "mongoose": "^8.18.0",
-    "nodemon": "^3.1.10",
+    "multer": "^2.0.2",
     "uuid": "^11.1.0"
   }
 }
