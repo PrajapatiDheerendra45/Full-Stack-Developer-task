@@ -6,6 +6,7 @@ const StatusView = ({ submissionId, onBackToSubmit }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [pollingInterval, setPollingInterval] = useState(null);
+  const [pollAttempts, setPollAttempts] = useState(0);
 
   // Start polling when submissionId changes
   useEffect(() => {
@@ -22,16 +23,14 @@ const StatusView = ({ submissionId, onBackToSubmit }) => {
   }, [submissionId]);
 
   const startPolling = (id) => {
-    // Clear any existing interval
     if (pollingInterval) {
       clearInterval(pollingInterval);
     }
-    
-    // Start new polling interval (every 2 seconds)
+    setPollAttempts(0);
     const interval = setInterval(() => {
       checkStatus(id);
-    }, 2000);
-    
+      setPollAttempts((prev) => prev + 1);
+    }, 10000); // 10 seconds
     setPollingInterval(interval);
   };
 
@@ -53,6 +52,11 @@ const StatusView = ({ submissionId, onBackToSubmit }) => {
 
     try {
       const response = await fetch(`http://localhost:5000/api/submissions/${id.trim()}`);
+      if (response.status === 429) {
+        setError('Too many requests. Please wait before trying again.');
+        stopPolling();
+        return;
+      }
       const data = await response.json();
 
       if (!response.ok) {
@@ -286,7 +290,7 @@ const StatusView = ({ submissionId, onBackToSubmit }) => {
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
                     <span className="text-sm text-blue-700">
-                      Auto-refreshing every 2 seconds...
+                      Auto-refreshing every 10 seconds...
                     </span>
                     <button
                       onClick={stopPolling}
